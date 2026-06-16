@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  # ─────────────────────────
+  # Banco de dados MySQL
+  # ─────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: lenspro_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: lenspro
+    volumes:
+      - db_data:/var/lib/mysql   # persiste os dados mesmo que o container seja removido
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ─────────────────────────
+  # Aplicação Flask (LensPro)
+  # ─────────────────────────
+  web:
+    build: .
+    container_name: lenspro_web
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env                     # carrega SECRET_KEY, MAIL_*, etc.
+    environment:
+      # Sobrescreve o DATABASE_URL do .env para apontar para o container "db"
+      DATABASE_URL: mysql+pymysql://root:${MYSQL_ROOT_PASSWORD}@db/lenspro
+    depends_on:
+      db:
+        condition: service_healthy   # aguarda o MySQL estar pronto antes de subir o Flask
+
+volumes:
+  db_data:   # volume nomeado para persistência do banco

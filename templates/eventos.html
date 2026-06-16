@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Eventos | LensPro</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Lens<span>Pro</span>
+    </div>
+
+    <button class="menu-toggle">
+        ☰
+    </button>
+
+    <nav>
+
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('eventos') }}">Eventos</a>
+        <a href="{{ url_for('fotografos') }}">Fotógrafos</a>
+        <a href="{{ url_for('galeria') }}">Galeria</a>
+        <a href="{{ url_for('contato') }}">Contato</a>
+
+    </nav>
+
+</header>
+
+<section class="hero">
+
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+
+        <h1>
+            Descubra Eventos Incríveis
+        </h1>
+
+        <p>
+            Explore corridas, casamentos,
+            formaturas e eventos corporativos.
+        </p>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <h3>
+            🏃 Maratona São Paulo
+        </h3>
+
+        <p>
+            Mais de 15 mil atletas registrados.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>
+            💍 Casamento Ana & Lucas
+        </h3>
+
+        <p>
+            Galeria premium disponível.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>
+            🎓 Formatura Medicina USP
+        </h3>
+
+        <p>
+            Mais de 4.000 fotos publicadas.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>
+            ⚽ Final Estadual Sub-20
+        </h3>
+
+        <p>
+            Cobertura completa do campeonato.
+        </p>
+
+    </div>
+
+</section>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>

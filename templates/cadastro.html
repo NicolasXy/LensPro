@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cadastro | LensPro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="left-side">
+
+        <div class="overlay"></div>
+
+        <div class="content">
+
+            <h1>LensPro</h1>
+
+            <p>
+                Crie sua conta e comece a vender suas fotos.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="right-side">
+
+        <form
+            class="register-form"
+            method="POST"
+            action="{{ url_for('cadastro') }}"
+        >
+
+            <h2>Criar Conta</h2>
+
+            <p class="subtitle">
+                Junte-se à comunidade LensPro
+            </p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="input-group">
+
+                <label>Nome</label>
+
+                <input
+                    type="text"
+                    name="nome"
+                    placeholder="Seu nome"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Sobrenome</label>
+
+                <input
+                    type="text"
+                    name="sobrenome"
+                    placeholder="Seu sobrenome"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Digite seu email"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Senha</label>
+
+                <input
+                    type="password"
+                    name="senha"
+                    placeholder="Crie uma senha"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Criar Conta
+            </button>
+
+            <p class="register">
+
+                Já possui conta?
+
+                <a href="{{ url_for('login') }}">
+                    Entrar
+                </a>
+
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

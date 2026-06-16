@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nova Senha | LensPro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="left-side">
+
+        <div class="overlay"></div>
+
+        <div class="content">
+
+            <h1>LensPro</h1>
+
+            <p>
+                Defina sua nova senha.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="right-side">
+
+        <form
+            class="recovery-form"
+            method="POST"
+            action="{{ url_for('redefinir_senha', token=token) }}"
+        >
+
+            <h2>
+                Nova Senha
+            </h2>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="input-group">
+
+                <label>
+                    Nova senha
+                </label>
+
+                <input
+                    type="password"
+                    name="senha"
+                    placeholder="Digite sua nova senha"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Alterar Senha
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>

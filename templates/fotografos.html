@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Fotógrafos | LensPro</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Lens<span>Pro</span>
+    </div>
+
+    <button class="menu-toggle">
+        ☰
+    </button>
+
+    <nav>
+
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('eventos') }}">Eventos</a>
+        <a href="{{ url_for('fotografos') }}">Fotógrafos</a>
+        <a href="{{ url_for('galeria') }}">Galeria</a>
+        <a href="{{ url_for('contato') }}">Contato</a>      
+
+    </nav>
+
+</header>
+
+<section class="gallery">
+
+    <div class="gallery-text">
+
+        <h2>
+            Fotógrafos em Destaque
+        </h2>
+
+        <p>
+            Conheça profissionais incríveis.
+        </p>
+
+    </div>
+
+    <div class="features">
+
+        <div class="feature-card">
+
+            <h3>
+                Carlos Henrique
+            </h3>
+
+            <p>
+                ⭐ 4.9
+                <br>
+                Eventos e Esportes
+                <br>
+                São Paulo/SP
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Mariana Souza
+            </h3>
+
+            <p>
+                ⭐ 5.0
+                <br>
+                Casamentos
+                <br>
+                Curitiba/PR
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Pedro Martins
+            </h3>
+
+            <p>
+                ⭐ 4.8
+                <br>
+                Ensaios Premium
+                <br>
+                Belo Horizonte/MG
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Fernanda Lima
+            </h3>
+
+            <p>
+                ⭐ 5.0
+                <br>
+                Corporativo
+                <br>
+                Rio de Janeiro/RJ
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Galeria | LensPro</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Lens<span>Pro</span>
+    </div>
+
+    <button class="menu-toggle">
+        ☰
+    </button>
+
+    <nav>
+
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('eventos') }}">Eventos</a>
+        <a href="{{ url_for('fotografos') }}">Fotógrafos</a>
+        <a href="{{ url_for('galeria') }}">Galeria</a>
+        <a href="{{ url_for('contato') }}">Contato</a>
+
+    </nav>
+
+</header>
+
+<section class="gallery">
+
+    <div class="gallery-text">
+
+        <h2>
+            Galeria de Eventos
+        </h2>
+
+        <p>
+            Explore os melhores momentos registrados na plataforma.
+        </p>
+
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+    </div>
+
+</section>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>

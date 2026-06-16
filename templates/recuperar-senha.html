@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Recuperar Senha | LensPro</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="left-side">
+
+        <div class="overlay"></div>
+
+        <div class="content">
+
+            <h1>LensPro</h1>
+
+            <p>
+                Recuperação segura de acesso.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="right-side">
+
+        <form
+            class="recovery-form"
+            method="POST"
+            action="{{ url_for('recuperar_senha') }}"
+        >
+
+            <h2>
+                Recuperar Senha
+            </h2>
+
+            <p class="subtitle">
+
+                Digite o email cadastrado para receber as instruções.
+
+            </p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Digite seu email"
+                    required
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Enviar Instruções
+            </button>
+
+            <p class="register">
+
+                Lembrou sua senha?
+
+                <a href="{{ url_for('login') }}">
+                    Fazer Login
+                </a>
+
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

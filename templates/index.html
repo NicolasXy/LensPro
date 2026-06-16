@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>LensPro</title>
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Lens<span>Pro</span>
+    </div>
+
+    <button class="menu-toggle">
+        ☰
+    </button>
+
+    <nav>
+    <a href="{{ url_for('index') }}">Início</a>
+    <a href="{{ url_for('eventos') }}">Eventos</a>
+    <a href="{{ url_for('fotografos') }}">Fotógrafos</a>
+    <a href="{{ url_for('galeria') }}">Galeria</a>
+    <a href="{{ url_for('contato') }}">Contato</a>
+    </nav>
+
+    {% if session.get('usuario_id') %}
+    <a href="{{ url_for('perfil') }}" class="btn-login">Meu Perfil</a>
+    {% else %}
+    <a href="{{ url_for('login') }}" class="btn-login">Entrar</a>
+    {% endif %}
+
+</header>
+
+<section class="hero">
+
+    <div class="overlay"></div>
+
+    <div class="hero-content fade-up">
+
+        <div class="hero-badge">
+            +5.000 fotógrafos ativos
+        </div>
+
+        <h1>
+            Transforme suas fotos em experiências inesquecíveis
+        </h1>
+
+        <p>
+            Plataforma moderna para fotógrafos de eventos,
+            esportes e ensaios.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="{{ url_for('cadastro') }}"
+                class="btn btn-primary"
+            >
+                Começar Agora
+            </a>
+
+            <a
+                href="{{ url_for('eventos') }}"
+                class="btn btn-secondary"
+            >
+                Explorar Eventos
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <h3>Upload Ilimitado</h3>
+
+        <p>
+            Publique milhares de fotos sem preocupação.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>Entrega Automática</h3>
+
+        <p>
+            Seus clientes recebem tudo em segundos.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h3>Reconhecimento Facial</h3>
+
+        <p>
+            Tecnologia inteligente para localizar fotos.
+        </p>
+
+    </div>
+
+</section>
+
+<section class="gallery">
+
+    <div class="gallery-text">
+
+        <h2>
+            Eventos Recentes
+        </h2>
+
+        <p>
+            Alguns dos trabalhos publicados recentemente.
+        </p>
+
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="photo">
+            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+    </div>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat">
+        <h2>+12M</h2>
+        <span>Fotos enviadas</span>
+    </div>
+
+    <div class="stat">
+        <h2>+5K</h2>
+        <span>Fotógrafos ativos</span>
+    </div>
+
+    <div class="stat">
+        <h2>+350K</h2>
+        <span>Clientes felizes</span>
+    </div>
+
+</section>
+
+<section class="cta">
+
+    <h2>
+        Pronto para elevar seu trabalho?
+    </h2>
+
+    <p>
+        Crie sua conta gratuitamente.
+    </p>
+
+    <a href="{{ url_for('cadastro') }}" class="btn-cadastro">
+    Criar Conta
+    </a>
+
+</section>
+
+<footer>
+
+    <div class="footer-logo">
+        LensPro
+    </div>
+
+    <p>
+        © 2026 LensPro
+    </p>
+
+</footer>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Painel | LensPro</title>
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Lens<span>Pro</span>
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('eventos') }}">Eventos</a>
+        <a href="{{ url_for('fotografos') }}">Fotógrafos</a>
+        <a href="{{ url_for('galeria') }}">Galeria</a>
+        <a href="{{ url_for('contato') }}">Contato</a>
+        <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
+
+    </nav>
+
+</aside>
+
+<main class="main-content">
+
+    <header class="topbar">
+
+        <div>
+
+            <h1>
+                Olá, {{ nome }} 👋
+            </h1>
+
+            <p>
+                Bem-vindo ao seu painel LensPro.
+            </p>
+
+        </div>
+
+        <div class="profile-mini">
+
+            <img
+                src="https://i.pravatar.cc/100"
+                alt="foto de perfil"
+            >
+
+        </div>
+
+    </header>
+
+    <section class="profile-banner">
+
+        <img
+            class="cover"
+            src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1600&auto=format&fit=crop"
+        >
+
+        <div class="profile-info">
+
+            <img
+                class="avatar"
+                src="https://i.pravatar.cc/200"
+                alt="avatar"
+            >
+
+            <div>
+
+                <h2>
+                    {{ nome }} {{ sobrenome }}
+                </h2>
+
+                <span>
+                    Fotógrafo de Eventos e Esportes
+                </span>
+
+                <p>
+                    Especialista em eventos premium,
+                    fotografia esportiva e cobertura corporativa.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="stats">
+
+        <div class="stat">
+            <h2>128</h2>
+            <span>Eventos</span>
+        </div>
+
+        <div class="stat">
+            <h2>45K</h2>
+            <span>Fotos</span>
+        </div>
+
+        <div class="stat">
+            <h2>2.3K</h2>
+            <span>Clientes</span>
+        </div>
+
+        <div class="stat">
+            <h2>R$18K</h2>
+            <span>Vendas</span>
+        </div>
+
+    </section>
+
+    <section class="features">
+
+        <div class="feature-card">
+
+            <h3>
+                Próximo Evento
+            </h3>
+
+            <p>
+                Maratona São Paulo 2026
+                <br>
+                15/08/2026
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Avaliação Média
+            </h3>
+
+            <p>
+                ⭐ 4.9 / 5
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Receita do Mês
+            </h3>
+
+            <p>
+                R$ 4.850,00
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="gallery">
+
+        <div class="gallery-text">
+
+            <h2>
+                Últimos Trabalhos
+            </h2>
+
+        </div>
+
+        <div class="gallery-grid">
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200&auto=format&fit=crop">
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop">
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop">
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop">
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script
+    src="{{ url_for('static', filename='app.js') }}"
+></script>
+
+</body>
+</html>
