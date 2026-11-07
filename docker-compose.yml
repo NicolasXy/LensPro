@@ -1,0 +1,16 @@
+# PostgreSQL local para desenvolvimento (Windows 10+, Ubuntu 24.04+ e derivadas, com Docker).
+# Uso: docker compose up -d   (os dados ficam no volume "lenspro_pg")
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lenspro
+      POSTGRES_PASSWORD: lenspro
+      POSTGRES_DB: lenspro
+    ports:
+      - "5432:5432"
+    volumes:
+      - lenspro_pg:/var/lib/postgresql/data
+volumes:
+  lenspro_pg:

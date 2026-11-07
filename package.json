@@ -1,0 +1,19 @@
+{
+  "name": "lenspro",
+  "version": "2.0.0",
+  "private": true,
+  "description": "LensPro: marketplace de fotografias com marca d'agua, criptografia em repouso e pagamento (API Fastify + Prisma + PostgreSQL e front React)",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix web install",
+    "setup": "npm run install:all && npm --prefix server run prisma:generate && npm --prefix server run db:setup && npm run build:web",
+    "build": "npm --prefix server run build && npm run build:web",
+    "build:web": "npm --prefix web run build",
+    "start": "npm --prefix server run start",
+    "dev:server": "npm --prefix server run dev",
+    "dev:web": "npm --prefix web run dev",
+    "test": "npm --prefix server test",
+    "docs:openapi": "npm --prefix server run build && npm --prefix server run docs:openapi"
+  },
+  "engines": { "node": "^20.19 || ^22.12 || >=24.0" },
+  "license": "UNLICENSED"
+}

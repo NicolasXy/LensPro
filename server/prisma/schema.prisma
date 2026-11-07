@@ -1,0 +1,227 @@
+// spiderman
+// Modelo de dados do LensPro (marketplace de fotografias). A URL do banco NAO
+// fica aqui (Prisma 7): ela e lida por prisma.config.ts (migracoes) e por
+// src/db/prisma.ts (runtime).
+//
+// Relacoes: Usuario 1-0..1 PerfilFotografo; Usuario(fotografo) 1-N Evento;
+// Usuario(fotografo) 1-N Foto; Evento 1-N Foto; Usuario(comprador) 1-N Pedido;
+// Pedido 1-N ItemPedido N-1 Foto; Pedido 1-N Pagamento.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Papel {
+  admin
+  fotografo
+  comprador
+}
+
+enum StatusFoto {
+  publicada
+  oculta
+  removida
+}
+
+enum StatusPedido {
+  pendente
+  pago
+  cancelado
+  expirado
+}
+
+enum MetodoPagamento {
+  pix
+  cartao
+}
+
+enum StatusPagamento {
+  pendente
+  aprovado
+  recusado
+  cancelado
+}
+
+model Usuario {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome            String    @db.VarChar(100)
+  sobrenome       String    @db.VarChar(100)
+  email           String    @unique @db.VarChar(150)
+  senhaHash       String    @db.VarChar(100)
+  papel           Papel
+  ativo           Boolean   @default(true)
+  versao          Int       @default(1)
+  // Recuperacao de senha: guardamos apenas o SHA-256 do token (nunca o token).
+  resetTokenHash  String?   @unique @db.VarChar(64)
+  resetExpiraEm   DateTime? @db.Timestamptz(3)
+  // Protecao contra forca bruta: contador de falhas e bloqueio temporario.
+  tentativasFalhas Int      @default(0)
+  bloqueadoAte    DateTime? @db.Timestamptz(3)
+  criadoEm        DateTime  @default(now()) @db.Timestamptz(3)
+  atualizadoEm    DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
+
+  perfil     PerfilFotografo?
+  eventos    Evento[]
+  fotos      Foto[]
+  pedidos    Pedido[]
+  auditorias Auditoria[]
+
+  @@index([papel])
+}
+
+model PerfilFotografo {
+  usuarioId       String   @id @db.Uuid
+  nomeArtistico   String   @db.VarChar(100)
+  bio             String?  @db.VarChar(1000)
+  cidade          String?  @db.VarChar(80)
+  estado          String?  @db.VarChar(2)
+  especialidade   String?  @db.VarChar(80)
+  // Chave Pix para repasse: cifrada com AES-256-GCM (pacote JSON). Somente a
+  // mascara (ex.: "***-4321") e exibida ao proprio fotografo.
+  pixChaveCifrada String?  @db.Text
+  pixMascara      String?  @db.VarChar(40)
+  // Id da conta PagBank do fotografo (ACCO_...): recebe a parte dele da venda por split, direto do PagBank.
+  // Nao e segredo (identifica a conta, nao da acesso a ela).
+  pagbankContaId  String?  @db.VarChar(41)
+  versao          Int      @default(1)
+  criadoEm        DateTime @default(now()) @db.Timestamptz(3)
+  atualizadoEm    DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model Evento {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fotografoId String   @db.Uuid
+  titulo      String   @db.VarChar(150)
+  descricao   String?  @db.VarChar(1000)
+  local       String?  @db.VarChar(150)
+  dataEvento  DateTime @db.Date
+  ativo       Boolean  @default(true)
+  versao      Int      @default(1)
+  criadoEm    DateTime @default(now()) @db.Timestamptz(3)
+  atualizadoEm DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  fotografo Usuario @relation(fields: [fotografoId], references: [id], onDelete: Cascade)
+  fotos     Foto[]
+
+  @@index([fotografoId])
+  @@index([dataEvento])
+}
+
+model Foto {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fotografoId   String     @db.Uuid
+  eventoId      String?    @db.Uuid
+  titulo        String     @db.VarChar(150)
+  descricao     String?    @db.VarChar(1000)
+  tags          String[]   @default([])
+  // Preco em centavos (inteiro): evita erro de arredondamento de ponto flutuante.
+  precoCentavos Int
+  largura       Int
+  altura        Int
+  bytesOriginal Int
+  // Formato do arquivo original ("jpeg", "png" ou "webp"), detectado decodificando a imagem.
+  formato       String     @db.VarChar(10)
+  // SHA-256 do arquivo original (integridade; conferido ao entregar a compra).
+  sha256Original String    @db.VarChar(64)
+  status        StatusFoto @default(publicada)
+  versao        Int        @default(1)
+  criadoEm      DateTime   @default(now()) @db.Timestamptz(3)
+  atualizadoEm  DateTime   @default(now()) @updatedAt @db.Timestamptz(3)
+
+  fotografo Usuario      @relation(fields: [fotografoId], references: [id], onDelete: Cascade)
+  evento    Evento?      @relation(fields: [eventoId], references: [id], onDelete: SetNull)
+  itens     ItemPedido[]
+
+  @@index([fotografoId])
+  @@index([eventoId])
+  @@index([status, criadoEm])
+}
+
+model Pedido {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  compradorId   String       @db.Uuid
+  status        StatusPedido @default(pendente)
+  totalCentavos Int
+  expiraEm      DateTime     @db.Timestamptz(3)
+  pagoEm        DateTime?    @db.Timestamptz(3)
+  versao        Int          @default(1)
+  criadoEm      DateTime     @default(now()) @db.Timestamptz(3)
+  atualizadoEm  DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
+
+  comprador  Usuario      @relation(fields: [compradorId], references: [id], onDelete: Restrict)
+  itens      ItemPedido[]
+  pagamentos Pagamento[]
+
+  @@index([compradorId, criadoEm])
+  @@index([status, expiraEm])
+}
+
+model ItemPedido {
+  id                     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pedidoId               String @db.Uuid
+  fotoId                 String @db.Uuid
+  fotografoId            String @db.Uuid
+  // Snapshot do preco no momento da compra: mudar o preco depois nao altera pedidos.
+  precoCentavos          Int
+  taxaPlataformaCentavos Int
+  downloads              Int    @default(0)
+
+  pedido Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  foto   Foto   @relation(fields: [fotoId], references: [id], onDelete: Restrict)
+
+  @@unique([pedidoId, fotoId])
+  @@index([fotoId])
+  @@index([fotografoId])
+}
+
+model Pagamento {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pedidoId          String          @db.Uuid
+  metodo            MetodoPagamento
+  status            StatusPagamento @default(pendente)
+  valorCentavos     Int
+  referenciaGateway String          @unique @db.VarChar(64)
+  gatewayPedidoId   String?         @db.VarChar(64)
+  pixCopiaECola     String?         @db.Text
+  // Do cartao guardamos SOMENTE bandeira e os 4 ultimos digitos (nunca o numero, validade ou CVV).
+  cartaoBandeira    String?         @db.VarChar(20)
+  cartaoFinal       String?         @db.VarChar(4)
+  motivoRecusa      String?         @db.VarChar(200)
+  criadoEm          DateTime        @default(now()) @db.Timestamptz(3)
+  confirmadoEm      DateTime?       @db.Timestamptz(3)
+
+  pedido Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+
+  @@index([pedidoId])
+  @@index([gatewayPedidoId])
+}
+
+// Trilha de auditoria imutavel (UPDATE/DELETE bloqueados por trigger no banco).
+model Auditoria {
+  id        BigInt   @id @default(autoincrement())
+  usuarioId String?  @db.Uuid
+  acao      String   @db.VarChar(60)
+  detalhes  Json     @default("{}")
+  criadoEm  DateTime @default(now()) @db.Timestamptz(3)
+
+  usuario Usuario? @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+
+  @@index([usuarioId])
+  @@index([acao, criadoEm])
+}
+
+model MensagemContato {
+  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome     String   @db.VarChar(100)
+  email    String   @db.VarChar(150)
+  mensagem String   @db.VarChar(3000)
+  criadoEm DateTime @default(now()) @db.Timestamptz(3)
+}
